@@ -5,6 +5,7 @@
 3. The final approach would be to freeze the ecnoder and only train the classifier.
 4. We also discussed about understanding how information is actually stored in the vector space. But it would be too much for this course :(
 
+More ideas can be added, if not mentioned......
 
 # Suggestions / Things to Keep In Mind
 - Professor also mentioned/emphasized on the preprocessing and the quality of the data on which we are training. TBH, we didn't thought about it during our discussion, but its quite important.
