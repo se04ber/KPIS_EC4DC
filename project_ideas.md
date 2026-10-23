@@ -22,3 +22,17 @@ Yes therefore maybe if we do just a inference analysis we need to optimal find e
 - Encoder models can take an input of specific size for example 512. (document chunks sizes, rechunking maybe needed)
 
 - We would have to see how much compute power we have and how much is required for our approach. Current recommended environment by claude is Kaggle
+
+
+# Ressources available on Kaggle:
+## GPU compute:
+* fixed weekly allowance of 
+* guaranteed 30 GPU hours/per week (T4 or P100)
+* 20h/week on TPU (v6e-8 (8 cores)?)
+* we can use both in the same week
+(source: currently only Claude, needs to be checked on Kaggle again)
+
+## Storage:
+* 20 GB, persistent
+* per session ca. 29–30 GB of system RAM and 4 CPU cores
+(source: currently only Claude, needs to be checked on Kaggle again)
