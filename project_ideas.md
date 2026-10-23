@@ -1,15 +1,24 @@
 # Discussed Ideas
 
+Training/Retraining Encoder for different architectures and compare:
 1. Train the full Encoder on the dataset along with the classifier
 2. Train some part of the Encoder or train additoinal weights[its called LoRA which is Low Rank Adaptation]
-3. The final approach would be to freeze the ecnoder and only train the classifier.
-4. We also discussed about understanding how information is actually stored in the vector space. But it would be too much for this course :(
+3. The final approach would be to freeze the encoder and only train the classifier.
+
+Just Inference performance comparison:
+4. Of different pretrained encoders
+5. Of encoder vs. full small or commercial LMs
+
+Further Ideas:
+6. Trying to see if we can analyse/understand something in the vector space of Encoder for (document classification)
+(We also discussed about understanding how information is actually stored in the vector space. But it would probably be too much for this course :( )
 
 More ideas can be added, if not mentioned......
 
 # Suggestions / Things to Keep In Mind
 - Professor also mentioned/emphasized on the preprocessing and the quality of the data on which we are training. TBH, we didn't thought about it during our discussion, but its quite important.
+Yes therefore maybe if we do just a inference analysis we need to optimal find encoders trained mostly on the same dataset, if possible.
 
-- Encoder models can take an input of specific size for example 512.
+- Encoder models can take an input of specific size for example 512. (document chunks sizes, rechunking maybe needed)
 
 - We would have to see how much compute power we have and how much is required for our approach. Current recommended environment by claude is Kaggle
