@@ -57,6 +57,7 @@ for strengthening/certainty estimation of results: every setting at least 3 time
 ### Evaluation
 - accuracy (and macro F1, so small classes count too), confusion matrix, e.g. with scikit-learn
 - spread over seeds (mean ± std), plots e.g. in matplotlib
+
 maybe (if time allows):
 - cost, e.g. trainable parameters, training time, GPU memory (e.g. peft, torch)
 - per-layer classifier and silhouette score (e.g. scikit-learn), word attributions (e.g. captum) (Claude Code Suggestion)
