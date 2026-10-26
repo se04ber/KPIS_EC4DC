@@ -55,10 +55,10 @@ for strengthening/certainty estimation of results: every setting atleast 3 times
 *Dodge et al. 2020*
 
 ### Evaluation
-- accuracy (and macro F1, so small classes count too), confusion matrix, all with scikit-learn
-- cost: trainable parameters, training time, GPU memory (peft, torch)
-- mean ± std over seeds, plots in matplotlib
-- if time: per-layer classifier and silhouette score (scikit-learn), word attributions (captum)
+- e.g. accuracy (and macro F1, so small classes count too), confusion matrix, e.g. with scikit-learn
+- cost, e.g. trainable parameters, training time, GPU memory (e.g. peft, torch)
+- mean ± std over seeds, plots e.g. in matplotlib
+- if time: e.g. per-layer classifier and silhouette score (e.g. scikit-learn), word attributions (e.g. captum)
 
 ### Write up
 - paper, 4 pages
