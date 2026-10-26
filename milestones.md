@@ -3,7 +3,7 @@ Authors: Muhammad and Sabrina
 Topic: Document Classification Performance Comparison Study Encoder Architecture
 
 Mainly: how LoRA fine-tuning settings affect a BERT encoder's document classification performance.
-If there is time, out of interest: a look inside the fine-tuned models (vector space, explainable AI).
+If there is time, out of interest: a exploratory look inside the fine-tuned models (vector space, explainable AI).
 
 ## Milestones:
 
@@ -26,13 +26,13 @@ If there is time, out of interest: a look inside the fine-tuned models (vector s
    *Tenney et al. 2019, Merchant et al. 2020*
 
 ### Setup
-- Kaggle, 2x T4, 30 GPU hours per week
+- Ressources decided on to use: Kaggle, 2x T4, 30 GPU hours per week
 - fixed split, separate texts for training and testing
-- SST-2 (GLUE) first, then a document dataset, e.g. AG News
+- SST-2 (GLUE) first, then maybe a more document specific dataset, e.g. AG News
   *Wang et al. 2019, Zhang et al. 2015*
 
-### Settings to vary
-training:
+### Settings to possibly vary (will still be from priority sorted, based on research review)
+(training maybe:)
 - rank r = 4 / 8 / 16 / 64, alpha = r vs. 2r
 - learning rate 1e-4 / 5e-4 / 1e-3
   *Hu et al. 2022*
@@ -51,13 +51,19 @@ architecture:
 - maybe: DoRA instead of LoRA
   *Liu et al. 2024*
 
-every setting 3 times with different seeds
+for strengthening/certainty estimation of results: every setting atleast 3 times with different seeds
 *Dodge et al. 2020*
 
 ### Evaluation
-- accuracy, macro F1
-- cost: trainable parameters, training time, GPU memory
-- mean and spread over seeds
+- how well it classifies: accuracy, (macro F1, so small classes count too)
+  scikit-learn `accuracy_score`, `f1_score`
+- which classes get mixed up: confusion matrix
+  scikit-learn `confusion_matrix`
+- what it costs: trainable parameters, training time, peak GPU memory
+  peft `print_trainable_parameters`, `torch.cuda.max_memory_allocated`
+- mean and standard deviation over the seeds, plots with matplotlib
+- if time (5.): simple classifier per layer, how well classes group (silhouette score), which words decide
+  scikit-learn `LogisticRegression`, `silhouette_score`, captum
 
 ### Write up
 - paper, 4 pages
