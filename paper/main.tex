@@ -1,0 +1,195 @@
+%\documentclass[12pt,twoside]{article}
+\documentclass[conference]{IEEEtran}  % this should work with your LaTeX installation; else download extra package (www.ctan.org/pkg/ieeetran) or remove IEEE usage below
+
+%%%%%%% Fill this out:
+\newcommand{\trtitle}{(Fine-tuned BERT) Encoder Comparison for Document Classification}
+\newcommand{\titleshort}{KPIS EC4DC} % title for header:
+\newcommand{\authorlastnames}{Ebert, Hamza} % alphabetical for seminars
+\newcommand{\trcourse}{Knowledge Processing in Intelligent Systems: Practical Seminar}
+\newcommand{\trgroup}{Knowledge Technology, WTM}
+\newcommand{\truniversity}{Department of Informatics, University of Hamburg}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Languages:
+
+% If the thesis is written in English:
+\usepackage[english]{babel} 						
+\selectlanguage{english}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bind packages:
+
+\usepackage{acronym}                    % Acronyms
+\usepackage{algorithmic}				% Algorithms and Pseudocode
+\usepackage{algorithm}				% Algorithms and Pseudocode
+\usepackage{amsfonts}                   % AMS Math Packet (Fonts)
+\usepackage{amsmath}                    % AMS Math Packet
+\usepackage{amssymb}                    % Additional mathematical symbols
+\usepackage{amsthm}
+\usepackage{booktabs}                   % Nicer tables
+%\usepackage[font=small,labelfont=bf]{caption} % Numbered captions for figures
+\usepackage{color}                      % Enables defining of colors via \definecolor
+\definecolor{uhhRed}{RGB}{254,0,0}		  % Official Uni Hamburg Red
+\definecolor{uhhGrey}{RGB}{122,122,120} % Official Uni Hamburg Grey
+\usepackage{fancybox}                   % Gleichungen einrahmen
+\usepackage{fancyhdr}					% Packet for nicer headers
+%\usepackage{fancyheadings}             % Nicer numbering of headlines
+
+%\usepackage[outer=3.35cm]{geometry} 	  % Type area (size, margins...) !!!Release version
+%\usepackage[outer=2.5cm]{geometry} 		% Type area (size, margins...) !!!Print version
+%\usepackage{geometry} 					% Type area (size, margins...) !!!Proofread version
+\usepackage{geometry} 	  % Type area (size, margins...) !!!Draft version
+\geometry{a4paper,body={7.0in,9.1in}}
+
+\usepackage{graphicx}                   % Inclusion of graphics
+%\usepackage{latexsym}                  % Special symbols
+\usepackage{longtable}				% Allow tables over several parges
+\usepackage{listings}                   % Nicer source code listings
+\usepackage{multicol}					% Content of a table over several columns
+\usepackage{multirow}					% Content of a table over several rows
+\usepackage{rotating}					% Alows to rotate text and objects
+%\usepackage[hang]{subfigure}            % Allows to use multiple (partial) figures in a fig
+%\usepackage[font=footnotesize,labelfont=rm]{subfig}	% Pictures in a floating environment
+\usepackage{tabularx}					% Tables with fixed width but variable rows
+\usepackage{url,xspace,boxedminipage}   % Accurate display of URLs
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Configurationen:
+
+\hyphenation{whe-ther} 				% Manually use: "\-" in a word: Staats\-ver\-trag
+
+%\lstloadlanguages{C}                   % Set the default language for listings
+\DeclareGraphicsExtensions{.pdf,.svg,.jpg,.png,.eps} % first try pdf, then eps, png and jpg
+\graphicspath{{./src/}} 				% Path to a folder where all pictures are located
+\pagestyle{fancy} 					% Use nicer header and footer
+
+% Redefine the environments for floating objects:
+\setcounter{topnumber}{3}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.9} 			  %Standard: 0.7
+\renewcommand{\bottomfraction}{0.5}		  %Standard: 0.3
+\renewcommand{\textfraction}{0.1}		  	%Standard: 0.2
+\renewcommand{\floatpagefraction}{0.8} 	%Standard: 0.5
+
+% Tables with a nicer padding:
+\renewcommand{\arraystretch}{1.2}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Additional 'theorem' and 'definition' blocks:
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+%\newtheorem{theorem}{Satz}[section]		% Wenn in Deutsch geschrieben wird.
+\newtheorem{axiom}{Axiom}[section] 	
+%\newtheorem{axiom}{Fakt}[chapter]		% Wenn in Deutsch geschrieben wird.
+%Usage:%\begin{axiom}[optional description]%Main part%\end{fakt}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+%Additional types of axioms:
+\newtheorem{lemma}[axiom]{Lemma}
+\newtheorem{observation}[axiom]{Observation}
+
+%Additional types of definitions:
+\theoremstyle{remark}
+%\newtheorem{remark}[definition]{Bemerkung} % Wenn in Deutsch geschrieben wird.
+\newtheorem{remark}[definition]{Remark} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Provides TODOs within the margin:
+\newcommand{\TODO}[1]{\marginpar{\emph{\small{{\bf TODO: } #1}}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Abbreviations and mathematical symbols
+\newcommand{\modd}{\text{ mod }}
+\newcommand{\RS}{\mathbb{R}}
+\newcommand{\NS}{\mathbb{N}}
+\newcommand{\ZS}{\mathbb{Z}}
+\newcommand{\dnormal}{\mathit{N}}
+\newcommand{\duniform}{\mathit{U}}
+
+\newcommand{\erdos}{Erd\H{o}s}
+\newcommand{\renyi}{-R\'{e}nyi}
+\usepackage{graphicx}
+
+% correct bad hyphenation here
+\hyphenation{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Document:
+\begin{document}
+
+\title{\trtitle\\[1.5ex]
+\large \trcourse\\[0.5ex]
+\trgroup\\[0.5ex]
+\truniversity}
+
+\renewcommand{\headheight}{14.5pt}
+\fancyhead[LO]{\slshape \authorlastnames}
+\fancyhead[RO]{ \slshape \titleshort}
+
+\author{\IEEEauthorblockN{Sabrina Ebert}
+\IEEEauthorblockA{\textit{sabrina.ebert@studium.uni-hamburg.de}}
+\and
+\IEEEauthorblockN{Muhammad Hamza}
+\IEEEauthorblockA{\textit{(email)}}
+}
+
+\maketitle
+
+% Outline (assignment 3): 4 pages + appendix
+
+\begin{abstract}
+Encoder models like BERT are small and cheap compared to large language models and are often used for classifying texts.
+LoRA makes fine-tuning them cheaper by training only a few small added matrices.
+It comes with several settings, such as rank, learning rate and which layers it is added to, and it is not clear to us which of them matter most for a small encoder.
+In this work we fine-tune BERT-base with LoRA for text classification on SST-2 and AG News and measure if and for which settings the classification performance changes, and by how much.
+We change one setting at a time, run every setting with three seeds and compare accuracy and macro F1 to a frozen BERT baseline.
+Our working hypothesis is that learning rate and LoRA placement change the performance more than the rank does.
+If time allows, we also take a first look inside the fine-tuned models with explainable AI methods, e.g.\ word attributions, to explain the results.
+\end{abstract}
+
+\IEEEpeerreviewmaketitle
+
+\section{Introduction and Motivation}
+\label{sec:introduction}
+\begin{itemize}
+  \item encoders small and cheap vs.\ LLMs
+  \item LoRA: many settings, little guidance
+\end{itemize}
+
+\section{Theoretical Background}
+\label{sec:background}
+\subsection{BERT}
+\subsection{LoRA}
+\subsection{Related Work}
+
+\section{Experimental Setup}
+\label{sec:setup}
+\begin{itemize}
+  \item Kaggle, SST-2, AG News
+  \item baseline, LoRA study, second dataset
+  \item libraries: transformers, peft, scikit-learn, maybe captum (XAI)
+  \item 3 seeds per setting
+\end{itemize}
+
+\section{Results}
+\label{sec:results}
+
+\section{Discussion and Outlook}
+\label{sec:discussion}
+
+\section*{Acknowledgments and Use of Tools and AI}
+We used Claude Code (Anthropic) to set up the LaTeX layout, to suggest some of the references and to draft the abstract from our milestones and improve its grammar and wording.
+The topic, study design and working hypothesis are our own.
+We checked all text and references and take full responsibility for the content.
+
+\nocite{devlin2019bert,hu2022lora,sun2019finetune,dodge2020finetuning,socher2013sst,wang2019glue,zhang2015charcnn}
+
+\clearpage
+\bibliographystyle{plain}
+\bibliography{bib}
+
+\section*{Appendix: Code}
+
+\end{document}
