@@ -143,7 +143,7 @@
 Encoder models like BERT are small and cheap compared to large language models and are often used for classifying texts.
 LoRA makes fine-tuning them cheaper by training only a few small added matrices.
 It comes with several settings, such as rank, learning rate and which layers it is added to, and it is not clear to us which of them matter most for a small encoder.
-In this work we fine-tune BERT-base with LoRA for text classification on SST-2 and AG News and measure if and for which settings the classification performance changes, and by how much.
+In this work we fine-tune BERT-base with LoRA for classifying sentences, short news texts and full documents (SST-2, AG News, 20 Newsgroups) and measure if and for which settings the classification performance changes, and by how much.
 We change one setting at a time, run every setting with three seeds and compare accuracy and macro F1 to a frozen BERT baseline.
 Our working hypothesis is that learning rate and LoRA placement change the performance more than the rank does.
 If time allows, we also take a first look inside the fine-tuned models with explainable AI methods, e.g.\ word attributions, to explain the results.
@@ -167,8 +167,8 @@ If time allows, we also take a first look inside the fine-tuned models with expl
 \section{Experimental Setup}
 \label{sec:setup}
 \begin{itemize}
-  \item Kaggle, SST-2, AG News
-  \item baseline, LoRA study, second dataset
+  \item Kaggle, SST-2, AG News, 20 Newsgroups
+  \item baseline, LoRA study, other datasets
   \item libraries: transformers, peft, scikit-learn, maybe captum (XAI)
   \item 3 seeds per setting
 \end{itemize}
@@ -184,7 +184,7 @@ We used Claude Code (Anthropic) to set up the LaTeX layout, to suggest some of t
 The topic, study design and working hypothesis are our own.
 We checked all text and references and take full responsibility for the content.
 
-\nocite{devlin2019bert,hu2022lora,sun2019finetune,dodge2020finetuning,socher2013sst,wang2019glue,zhang2015charcnn}
+\nocite{devlin2019bert,hu2022lora,sun2019finetune,dodge2020finetuning,socher2013sst,wang2019glue,zhang2015charcnn,lang1995newsweeder}
 
 \clearpage
 \bibliographystyle{plain}
