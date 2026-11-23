@@ -1,7 +1,9 @@
 # Grid search 1: results, short
 
 Notebook: `Experiment/Draft_addGridsearch.ipynb`. Two full runs on Kaggle (T4), same code, different seeds.
-Data: `grid_results_combined.csv` (1002 runs). Plots: `grid_heatmaps.png`, `grid_main_effects.png` (also as SVG).
+Data: `grid_results_combined.csv` (1002 runs), per setting over seeds: `grid_results_seed_summary.csv`.
+Plots (PNG and SVG): `grid_heatmaps` (mean, variance in the cells), `grid_variance_heatmaps` (seed variance), `grid_main_effects` (mean +- 1 SD).
+Script: `plot_grid_seed_stats.py`, makes all three plots and the summary from the combined CSV.
 
 ## What ran
 
@@ -10,7 +12,7 @@ Data: `grid_results_combined.csv` (1002 runs). Plots: `grid_heatmaps.png`, `grid
 | Sabrina | 0, 1, 2 | 60 of 60 | 60 of 60 | 34 of 60 (stopped) | local zip |
 | Muhammad | 100, 101, 102 | 60 of 60 | 60 of 60 | 60 of 60 | `Output/outputs_backup.zip` |
 
-So SST-2 and AG News have 6 seeds per setting, 20 Newsgroups has 3 (6 for 34 settings).
+So SST-2 and AG News have 6 seeds per setting, 20 Newsgroups has 3 (6 for 34 settings, rank 16 only 3).
 
 Both runs agree: 154 settings ran in both, mean difference 0.2 (AG News), 0.4 (SST-2), 1.1 (20 Newsgroups) points, correlation 0.99.
 
@@ -38,13 +40,14 @@ All settings that are not in the grid come from Muhammad's config cell (section 
 
 ## Best settings (dev accuracy, mean over seeds)
 
-| dataset | best | accuracy | seed std |
-|---|---|---|---|
-| SST-2 | r 16, all 12 blocks, lr 1e-3 | 0.916 | 0.006 |
-| AG News | r 16, all 12 blocks, lr 1e-3 | 0.939 | 0.003 |
-| 20 Newsgroups | r 16, all 12 blocks, lr 1e-3 | 0.721 | 0.004 |
+| dataset | best | accuracy | seed std | seeds | 2nd best | gap | clearly better? |
+|---|---|---|---|---|---|---|---|
+| SST-2 | r 16, all 12 blocks, lr 1e-3 | 0.916 | 0.006 | 6 | r 16, last 2 blocks: 0.912 | 0.5 | no, gap 1.1 x its error |
+| AG News | r 16, all 12 blocks, lr 1e-3 | 0.939 | 0.003 | 6 | r 8, all 12 blocks: 0.934 | 0.5 | yes, 3.8 x |
+| 20 Newsgroups | r 16, all 12 blocks, lr 1e-3 | 0.721 | 0.004 | 3 | r 16, last 8 blocks: 0.712 | 1.0 | yes, 2.7 x |
 
 Same winner on all three datasets. Next best over all three: r 16 with the last 8 blocks, then r 8 with all 12 blocks.
+"Clearly better" here means the gap is more than about 2 times its standard error (from the seed spread of both settings). A rough rule, not a test.
 
 **Defaults for the next studies: lr 1e-3, rank 16, all 12 blocks.**
 
@@ -80,13 +83,36 @@ LoRA in the last n blocks (lr 1e-3, rank 16):
 
 SST-2: flat, last block alone almost enough. AG News: slow steady gain. 20 Newsgroups: big gain first, then smaller.
 
-Seed noise per setting: about 0.6 points (SST-2), 0.3 (AG News), 1.1 (20 Newsgroups).
+Seed noise per setting (median SD): about 0.6 points (SST-2), 0.3 (AG News), 1.1 (20 Newsgroups).
+
+## Is a step more than seed noise? (gap in points / how many times its error)
+
+| | rank 8 -> 16 | last 8 -> all 12 blocks | last 1 -> all 12 blocks | lr 5e-4 -> 1e-3 |
+|---|---|---|---|---|
+| SST-2 | +0.9 / 2.5 x | +0.7 / 1.5 x | +0.5 / 1.6 x | +0.5 / 1.4 x |
+| AG News | +0.5 / 3.8 x | +0.7 / 4.4 x | +1.9 / 17 x | +0.7 / 3.5 x |
+| 20 Newsgroups | +1.4 / 4.2 x | +1.0 / 2.7 x | +6.3 / 7.9 x | +2.1 / 5.0 x |
+
+SST-2: only the rank step is clearly above noise, blocks and lr steps are not. AG News and 20 Newsgroups: all steps are real, even small ones, because the seeds agree well there.
+
+## Where is the variance high? (`grid_variance_heatmaps`)
+
+| median seed SD in points | lr 1e-4 | 5e-4 | 1e-3 |
+|---|---|---|---|
+| SST-2 | 0.6 | 0.6 | 0.6 |
+| AG News | 0.4 | 0.3 | 0.3 |
+| 20 Newsgroups | 2.3 | 0.8 | 0.6 |
+
+- low learning rate (1e-4) and low rank (1) are the most unstable, most clearly on 20 Newsgroups (rank 1, lr 1e-4: SD up to about 4.7 points)
+- the best settings (lr 1e-3, rank 8 to 16) are also the most stable
+- SST-2 has the same noise everywhere (about 0.6), its small dev set (436 sentences) is the limit there
 
 ## Short
 
 - learning rate matters most, 1e-3 best, flattens
 - rank and blocks help a bit, more on harder data (20 Newsgroups)
-- short texts (SST-2): only the last block is nearly enough
+- short texts (SST-2): only the last block is nearly enough, the differences between block settings are within noise
+- best settings are also the most stable across seeds
 - best values sit at the edge of the grid (lr 1e-3, rank 16, 12 blocks), so higher values were not tried
 - dev scores only, test untouched
 
